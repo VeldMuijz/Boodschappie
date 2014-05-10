@@ -1,0 +1,43 @@
+﻿@model Boodschappie.Models.Items
+
+@{
+    ViewBag.Title = "Details";
+}
+
+<h2>Details</h2>
+
+<fieldset>
+    <legend>Items</legend>
+
+    <div class="display-label">
+         @Html.DisplayNameFor(model => model.ItemListId)
+    </div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.ItemListId)
+    </div>
+
+    <div class="display-label">
+         @Html.DisplayNameFor(model => model.ItemName)
+    </div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.ItemName)
+    </div>
+
+    <div class="display-label">
+         @Html.DisplayNameFor(model => model.Quantity)
+    </div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.Quantity)
+    </div>
+
+    <div class="display-label">
+         @Html.DisplayNameFor(model => model.Format)
+    </div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.Format)
+    </div>
+</fieldset>
+<p>
+    @Html.ActionLink("Edit", "Edit", new { id=Model.ItemsId }) |
+    @Html.ActionLink("Back to List", "Index")
+</p>

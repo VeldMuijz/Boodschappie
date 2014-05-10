@@ -1,0 +1,11 @@
+﻿@model Boodschappie.Models.Items
+
+<div class="editorRow">
+    @using(Html.BeginCollectionItem("Items")) { 
+    
+        Html.TextBoxFor(model => model.ItemName);
+            Html.TextBoxFor(model => model.Quantity);
+                Html.TextBoxFor(model => model.Format);
+        
+     }
+</div>

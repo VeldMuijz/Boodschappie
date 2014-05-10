@@ -1,0 +1,47 @@
+﻿@model Boodschappie.Models.Items
+
+@{
+    ViewBag.Title = "Delete";
+}
+
+<h2>Delete</h2>
+
+<h3>Are you sure you want to delete this?</h3>
+<fieldset>
+    <legend>Items</legend>
+
+    <div class="display-label">
+         @Html.DisplayNameFor(model => model.ItemListId)
+    </div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.ItemListId)
+    </div>
+
+    <div class="display-label">
+         @Html.DisplayNameFor(model => model.ItemName)
+    </div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.ItemName)
+    </div>
+
+    <div class="display-label">
+         @Html.DisplayNameFor(model => model.Quantity)
+    </div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.Quantity)
+    </div>
+
+    <div class="display-label">
+         @Html.DisplayNameFor(model => model.Format)
+    </div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.Format)
+    </div>
+</fieldset>
+@using (Html.BeginForm()) {
+    @Html.AntiForgeryToken()
+    <p>
+        <input type="submit" value="Delete" /> |
+        @Html.ActionLink("Back to List", "Index")
+    </p>
+}
