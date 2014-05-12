@@ -30,6 +30,19 @@
             @Html.EditorFor(model => model.ItemListName)
             @Html.ValidationMessageFor(model => model.ItemListName)
         </div>
+        <div class="editor-field">
+            <div id="editorRows" class="input-group">
+                @foreach (var item in Model.Items)
+                {
+                    @Html.Partial("ItemsRowPartial", item);
+
+                }
+
+            </div>
+
+        </div>
+
+        @Html.ActionLink("Add another...", "BlankItemRow", null, new { id = "addItem" })
 
         <div class="editor-label">
             @Html.LabelFor(model => model.LastUpdate)
@@ -51,4 +64,25 @@
 
 @section Scripts {
     @Scripts.Render("~/bundles/jqueryval")
+<script>
+    $(function () {
+
+        $('#addItem').click(function () {
+            $.ajax({
+                url: this.href,
+                cache: false,
+                success: function (html) {
+                    $('#editorRows').append(html);
+                }
+            });
+            return false;
+        });
+
+        $('a.deleteRow').live('click', function () {
+            $(this).parents('div.editorRow:first').remove();
+            return false;
+        });
+
+    })
+</script>
 }

@@ -25,14 +25,14 @@ namespace Boodschappie.Models
         
         
         
-        private AppContext dbContext = new AppContext();
+        private AppContext db = new AppContext();
 
         public Boolean checkUser(long userid, long listid) {            
             var result = false;
 
             var up = UserProfile.getUser(userid);
 
-            ItemList itemlist = dbContext.ItemList.Find(listid);
+            ItemList itemlist = db.ItemList.Find(listid);
 
             if (itemlist != null && up != null)
             {
@@ -58,6 +58,20 @@ namespace Boodschappie.Models
         public int Quantity { get; set; }
         [Required]
         public String Format { get; set; }
+
+        private AppContext db = new AppContext();
+
+        public static List<Items> getItemsList(long listId) {
+
+            using (AppContext db = new AppContext()) {
+                List<Items> listItems = (from items in db.Items
+                                         where items.ItemListId == listId
+                                         select items).ToList();
+                return listItems;
+            } 
+            
+        }
+    
     }
 
 }

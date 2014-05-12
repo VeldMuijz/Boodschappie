@@ -79,34 +79,24 @@ namespace Boodschappie.Controllers
         {
             if (ModelState.IsValid)
             {
-                UserProfile up = new UserProfile();
-
-
+               
                 if (itemlist.sharedWith == null)
                 {
                     itemlist.sharedWith = new List<UserProfile>();
-                    //up = up.getUser(itemlist.UserId);
-
                     itemlist.sharedWith.Add(UserProfile.getUser(itemlist.UserId));
 
                 }
+
                 if (ModelState.IsValid)
                 {
-
                     db.ItemList.Add(itemlist);
                     db.SaveChanges();
-
-
 
                     return RedirectToAction("Index");
                 }
 
                 return View(itemlist);
 
-
-                //db.ItemList.Add(itemlist);
-                //db.SaveChanges();
-                //return RedirectToAction("Index");
             }
 
             return View(itemlist);
@@ -118,10 +108,17 @@ namespace Boodschappie.Controllers
         public ActionResult Edit(long id = 0)
         {
             ItemList itemlist = db.ItemList.Find(id);
+
+            itemlist.Items = Items.getItemsList(id);
+
             if (itemlist == null)
             {
                 return HttpNotFound();
             }
+            else if (itemlist.Items.Count() < 1) {
+                return HttpNotFound();
+            }
+
             return View(itemlist);
         }
 
@@ -134,8 +131,33 @@ namespace Boodschappie.Controllers
         {
             if (ModelState.IsValid)
             {
+                
+                List<Items> items = Items.getItemsList(itemlist.ItemListId);
+                
+                foreach (var item in itemlist.Items)
+                {
+                    if (items.Contains(item))
+                    {
+                        db.Entry(item).State = EntityState.Modified;
+                        db.SaveChanges();
+                    }
+                    else {
+
+                        item.ItemListId = itemlist.ItemListId;
+
+                        if (ModelState.IsValid) {
+                            db.Items.Add(item);
+                            db.SaveChanges();
+
+                        }
+                    
+                    }
+                    
+                }
+
                 db.Entry(itemlist).State = EntityState.Modified;
                 db.SaveChanges();
+               
                 return RedirectToAction("Index");
             }
             return View(itemlist);
