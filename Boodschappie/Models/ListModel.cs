@@ -29,7 +29,8 @@ namespace Boodschappie.Models
 
         public Boolean checkUser(long userid, long listid) {            
             var result = false;
-            UserProfile up = UserProfile.getUser(userid);
+
+            var up = UserProfile.getUser(userid);
 
             ItemList itemlist = dbContext.ItemList.Find(listid);
 

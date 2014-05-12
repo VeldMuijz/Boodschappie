@@ -25,6 +25,13 @@ namespace Boodschappie.Controllers
         }
 
         //
+        public ActionResult BlankItemRow()
+        {
+
+            return PartialView("ItemsRowPartial", new Items());
+        }
+
+        //
         // GET: /ItemList/Details/5
 
         public ActionResult Details(long id = 0)
@@ -42,6 +49,7 @@ namespace Boodschappie.Controllers
 
         public ActionResult Create()
         {
+            
             var model = new ItemList
             {
 
@@ -49,13 +57,13 @@ namespace Boodschappie.Controllers
                 ItemListName = "",
                 LastUpdate = DateTime.Now,
                 sharedWith = new List<UserProfile>{
-                UserProfile.getUser(WebMatrix.WebData.WebSecurity.GetUserId(User.Identity.Name))
+                
+                    UserProfile.getUser(WebMatrix.WebData.WebSecurity.GetUserId(User.Identity.Name))
             },
                 Items = new List<Items> { 
 
-                    new Items { ItemName = "", Quantity = 0, Format = ""}
-            }
-
+                    new Items { }
+                }
 
             };
 
@@ -71,9 +79,34 @@ namespace Boodschappie.Controllers
         {
             if (ModelState.IsValid)
             {
-                db.ItemList.Add(itemlist);
-                db.SaveChanges();
-                return RedirectToAction("Index");
+                UserProfile up = new UserProfile();
+
+
+                if (itemlist.sharedWith == null)
+                {
+                    itemlist.sharedWith = new List<UserProfile>();
+                    //up = up.getUser(itemlist.UserId);
+
+                    itemlist.sharedWith.Add(UserProfile.getUser(itemlist.UserId));
+
+                }
+                if (ModelState.IsValid)
+                {
+
+                    db.ItemList.Add(itemlist);
+                    db.SaveChanges();
+
+
+
+                    return RedirectToAction("Index");
+                }
+
+                return View(itemlist);
+
+
+                //db.ItemList.Add(itemlist);
+                //db.SaveChanges();
+                //return RedirectToAction("Index");
             }
 
             return View(itemlist);
