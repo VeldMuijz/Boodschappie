@@ -49,7 +49,7 @@ namespace Boodschappie.Controllers
 
         public ActionResult Create()
         {
-            
+
             var model = new ItemList
             {
 
@@ -79,7 +79,7 @@ namespace Boodschappie.Controllers
         {
             if (ModelState.IsValid)
             {
-               
+
                 if (itemlist.sharedWith == null)
                 {
                     itemlist.sharedWith = new List<UserProfile>();
@@ -115,49 +115,71 @@ namespace Boodschappie.Controllers
             {
                 return HttpNotFound();
             }
-            else if (itemlist.Items.Count() < 1) {
+            else if (itemlist.Items.Count() < 1)
+            {
                 return HttpNotFound();
             }
 
             return View(itemlist);
         }
 
-        //
+        //Editing a itemlist, this includes CRUD on the items in the list
         // POST: /ItemList/Edit/5
-
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult Edit(ItemList itemlist)
         {
             if (ModelState.IsValid)
             {
-                
-                List<Items> items = Items.getItemsList(itemlist.ItemListId);
-                
-                foreach (var item in itemlist.Items)
+                using (AppContext db = new AppContext())
                 {
-                    if (items.Contains(item))
+                    List<Items> items = Items.getItemsList(itemlist.ItemListId);
+
+                    foreach (var item in itemlist.Items)
                     {
-                        db.Entry(item).State = EntityState.Modified;
-                        db.SaveChanges();
+                        //If item is in database, update
+                        if (items.Exists(x => x.ItemsId == item.ItemsId))
+                        {
+                            db.Entry(item).State = EntityState.Modified;
+                            db.SaveChanges();
+                            db.Entry(item).State = EntityState.Detached;
+
+                        }
+                        else
+                        {
+                            //If item not in databaase, add/create
+                            item.ItemListId = itemlist.ItemListId;
+
+                            if (ModelState.IsValid)
+                            {
+                                db.Items.Add(item);
+                                db.SaveChanges();
+
+                            }
+
+                        }
+
                     }
-                    else {
 
-                        item.ItemListId = itemlist.ItemListId;
-
-                        if (ModelState.IsValid) {
-                            db.Items.Add(item);
+                    //Remove all removed items from db
+                    foreach (var dbitem in items)
+                    {
+                        //For all items in db but no more in list, remove
+                        if (!itemlist.Items.Exists(x => x.ItemsId == dbitem.ItemsId))
+                        {
+                            db.Items.Attach(dbitem);
+                            db.Items.Remove(dbitem);
                             db.SaveChanges();
 
                         }
-                    
+
+                        //save ItemList to db
+                        db.Entry(itemlist).State = EntityState.Modified;
+                        db.SaveChanges();
+
                     }
-                    
                 }
 
-                db.Entry(itemlist).State = EntityState.Modified;
-                db.SaveChanges();
-               
                 return RedirectToAction("Index");
             }
             return View(itemlist);
