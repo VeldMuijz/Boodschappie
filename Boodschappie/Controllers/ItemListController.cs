@@ -87,6 +87,9 @@ namespace Boodschappie.Controllers
 
                 }
 
+                itemlist.LastUpdate = DateTime.Now;
+
+
                 if (ModelState.IsValid)
                 {
                     db.ItemList.Add(itemlist);
@@ -131,6 +134,7 @@ namespace Boodschappie.Controllers
         {
             if (ModelState.IsValid)
             {
+                itemlist.LastUpdate = DateTime.Now;`1           1
                 using (AppContext db = new AppContext())
                 {
                     List<Items> items = Items.getItemsList(itemlist.ItemListId);

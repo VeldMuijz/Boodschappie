@@ -16,11 +16,7 @@
         @Html.HiddenFor(model => model.ItemListId)
 
         <div class="editor-label">
-            @Html.LabelFor(model => model.UserId)
-        </div>
-        <div class="editor-field">
-            @Html.EditorFor(model => model.UserId)
-            @Html.ValidationMessageFor(model => model.UserId)
+            @Html.HiddenFor(model => model.UserId)
         </div>
 
         <div class="editor-label">
@@ -48,8 +44,7 @@
             @Html.LabelFor(model => model.LastUpdate)
         </div>
         <div class="editor-field">
-            @Html.EditorFor(model => model.LastUpdate)
-            @Html.ValidationMessageFor(model => model.LastUpdate)
+            @Html.DisplayFor(model => model.LastUpdate)
         </div>
 
         <p>

@@ -12,16 +12,11 @@
         <legend>Items</legend>
 
         <div class="editor-field">
-            @Html.EditorFor(model => model.ItemsId)
-            @Html.ValidationMessageFor(model => model.ItemsId)
+            @Html.HiddenFor(model => model.ItemsId)
         </div>
 
-        <div class="editor-label">
-            @Html.LabelFor(model => model.ItemListId)
-        </div>
         <div class="editor-field">
-            @Html.EditorFor(model => model.ItemListId)
-            @Html.ValidationMessageFor(model => model.ItemListId)
+            @Html.HiddenFor(model => model.ItemListId)
         </div>
 
         <div class="editor-label">
