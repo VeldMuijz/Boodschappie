@@ -46,11 +46,23 @@
         <p>
             <input type="submit" value="Create" />
         </p>
+
+        
+        <select id="comboBox"></select>
     </fieldset>
 }
 
 <div>
     @Html.ActionLink("Back to List", "Index")
+</div>
+
+<div>
+    <input id="searchUser" type="text" />
+    <div id="hiddendiv">
+        <table>
+            
+        </table>
+    </div>
 </div>
 
 @section Scripts {
@@ -78,4 +90,74 @@
 
     })
 </script>
+
+    <script>
+        
+
+        $(function () {
+
+            //function fillCombobox(data) {
+            //    alert(data);
+            //    $($.parseJSON(data.msg)).map(function () {
+            //        return $('<option>').val(this.value).text(this.label);
+            //    }).appendTo('#comboBox');
+            //}
+
+          
+            $('#searchUser').keyup(function () {
+                search = $('#searchUser').val();
+                $.ajax({
+                    type: "GET",
+                    url: ("/account/searchusers/"+search),
+                    success: function fillCombobox(data) {
+                        $('#hiddendiv').html("");
+                        $.each(data, function (index, item) {
+                            // alert(data[1].UserName);
+                            // alert("second alert" + this.UserName)
+                            $('#hiddendiv').append(
+                                 $('<tr></tr>').val(this.UserName).html(this.UserName)
+                             );
+                        });
+
+                        //$('#comboBox').html("");
+                        //$.each(data, function (index, item) {
+                        //   // alert(data[1].UserName);
+                        //   // alert("second alert" + this.UserName)
+                        //    $('#comboBox').append(
+                        //         $('<option></option>').val(this.UserName).html(this.UserName)
+                        //     );
+                        //});
+
+                        //$($.parseJSON(data)).map(function () {
+                        //    return $('<option>').val(this.value).text(this.label);
+                        //}).appendTo('#comboBox')
+
+
+
+                    },//function (data) { alert(data) },
+                    error: function () {
+                        alert('error');
+                     }
+
+            })
+
+                @*$.getJSON({
+                    type: "GET",
+                    url: "@Url.Action("SearchUsers","Account")",
+                    error: alert("error")
+                }).done(function (data) {
+                    alert(data);
+
+                })*@
+
+            }
+
+                )
+           
+
+
+        })
+
+        
+        </script>
 }

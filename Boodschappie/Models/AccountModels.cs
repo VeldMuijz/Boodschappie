@@ -5,6 +5,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 using System.Data.Entity;
 using System.Globalization;
 using System.Web.Security;
+using System.Linq;
 
 namespace Boodschappie.Models
 {
@@ -22,11 +23,23 @@ namespace Boodschappie.Models
         {
             using (AppContext dbContext = new AppContext())
             {
-                var user = dbContext.UserProfiles.Find(userid);
+                var user = dbContext.UserProfile.Find(userid);
                 
                 
                 return user;
                     }
+
+        }
+
+        public static List<UserProfile> searchUser(String searchString)
+        {
+            using (AppContext dbContext = new AppContext())
+            {
+
+                var users = dbContext.UserProfile.Where(up => up.UserName.Contains(searchString)).ToList();
+
+                return users;
+            }
 
         }
     }

@@ -105,6 +105,7 @@ namespace Boodschappie.Controllers
             return View(itemlist);
         }
 
+
         //
         // GET: /ItemList/Edit/5
 
@@ -134,7 +135,7 @@ namespace Boodschappie.Controllers
         {
             if (ModelState.IsValid)
             {
-                itemlist.LastUpdate = DateTime.Now;`1           1
+                itemlist.LastUpdate = DateTime.Now;
                 using (AppContext db = new AppContext())
                 {
                     List<Items> items = Items.getItemsList(itemlist.ItemListId);

@@ -12,7 +12,7 @@ namespace Boodschappie.Models
          public AppContext() : base("DefaultConnection") { }
          public DbSet<ItemList> ItemList { get; set; }
          public DbSet<Items> Items { get; set; }
-         public DbSet<UserProfile> UserProfiles { get; set; }
+         public DbSet<UserProfile> UserProfile { get; set; }
 
     }
 }
