@@ -8,7 +8,6 @@ namespace Boodschappie.Models
     public  class DbInitializer : System.Data.Entity.DropCreateDatabaseAlways<AppContext>
     {
        //Custom initializer of the database. This will seed all the data that is in this class
-
         protected override void Seed(AppContext context)
         {
             
