@@ -20,28 +20,33 @@ namespace Boodschappie.Models
         [Required]
         public String ItemListName { get; set; }
         public DateTime LastUpdate { get; set; }
-        public virtual List<UserProfile> sharedWith { get; set; }
+        public List<SharedWith> SharedWith { get; set; }
         public List<Items> Items { get; set; }
-        
-        
-        
-        private AppContext db = new AppContext();
 
-        public Boolean checkUser(long userid, long listid) {            
+    }
+
+    [Table("SharedWith")]
+    public class SharedWith {
+        public long SharedWithId { get; set; }
+        public long ItemListId { get; set; }
+        public long UserId { get; set; }
+
+        private AppContext db = new AppContext();
+        public Boolean checkUser(long userid, long listid)
+        {
             var result = false;
 
             var up = UserProfile.getUser(userid);
 
-            ItemList itemlist = db.ItemList.Find(listid);
+            SharedWith sw = db.SharedWith.Find(listid);
 
-            if (itemlist != null && up != null)
+            if (sw != null && up != null)
             {
-                result = itemlist.sharedWith.Contains(up);
+                result = true;
             }
 
             return result;
         }
-
     }
 
     [Table("Items")]

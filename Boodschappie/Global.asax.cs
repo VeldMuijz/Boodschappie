@@ -26,7 +26,11 @@ namespace Boodschappie
             SqlConnection.ClearAllPools();
             
             System.Diagnostics.Debug.WriteLine("[DB: Initializing tables]");
-            Database.SetInitializer<AppContext>(new DropCreateDatabaseAlways<AppContext>());
+            //Database.SetInitializer<AppContext>(new DropCreateDatabaseAlways<AppContext>());
+            //implemented custom initializer with overridden Seed method
+            Database.SetInitializer(new DbInitializer());
+            AppContext db = new AppContext();
+            db.Database.Initialize(true);
             
             System.Diagnostics.Debug.WriteLine("[DB: End of init]");
            

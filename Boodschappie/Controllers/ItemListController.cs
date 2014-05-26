@@ -56,11 +56,15 @@ namespace Boodschappie.Controllers
                 UserId = WebMatrix.WebData.WebSecurity.GetUserId(User.Identity.Name),
                 ItemListName = "",
                 LastUpdate = DateTime.Now,
-                sharedWith = new List<UserProfile>{
-                
-                    UserProfile.getUser(WebMatrix.WebData.WebSecurity.GetUserId(User.Identity.Name))
+                SharedWith = new List<SharedWith> {
+                    new SharedWith{
+                     ItemListId = 0,
+                    UserId = WebMatrix.WebData.WebSecurity.GetUserId(User.Identity.Name)
+                    }
+                  
+
             },
-                Items = new List<Items> { 
+               Items = new List<Items> { 
 
                     new Items { }
                 }
@@ -80,10 +84,14 @@ namespace Boodschappie.Controllers
             if (ModelState.IsValid)
             {
 
-                if (itemlist.sharedWith == null)
+                if (itemlist.SharedWith == null)
                 {
-                    itemlist.sharedWith = new List<UserProfile>();
-                    itemlist.sharedWith.Add(UserProfile.getUser(itemlist.UserId));
+                    itemlist.SharedWith = new List<SharedWith>();
+                    itemlist.SharedWith.Add(new SharedWith
+                    {
+                        ItemListId = 0,
+                        UserId = WebMatrix.WebData.WebSecurity.GetUserId(User.Identity.Name)
+                    });
 
                 }
 

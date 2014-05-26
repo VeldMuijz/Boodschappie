@@ -13,6 +13,7 @@ namespace Boodschappie.Models
          public DbSet<ItemList> ItemList { get; set; }
          public DbSet<Items> Items { get; set; }
          public DbSet<UserProfile> UserProfile { get; set; }
+         public DbSet<SharedWith> SharedWith { get; set; }
 
     }
 }
