@@ -25,10 +25,31 @@ namespace Boodschappie.Controllers
         }
 
         //
+        // GET: /ItemList/BlankItemRow()
         public ActionResult BlankItemRow()
         {
 
             return PartialView("ItemsRowPartial", new Items());
+        }
+
+        //
+        // GET: /ItemList/SharedWith
+        public ActionResult BlankSharedWithRow()
+        {
+
+            return PartialView("SharedWithPartial", new SharedWith());
+
+
+        }
+
+        //
+        // GET: /ItemList/AddSharedWith/4
+        public ActionResult AddSharedWith(long id)
+        {
+            var user = UserProfile.getUser(id);
+
+            return PartialView("SharedWithPartial", new SharedWith { UserId = user.UserId, UserName = user.UserName });
+
         }
 
         //
@@ -57,14 +78,10 @@ namespace Boodschappie.Controllers
                 ItemListName = "",
                 LastUpdate = DateTime.Now,
                 SharedWith = new List<SharedWith> {
-                    new SharedWith{
-                     ItemListId = 0,
-                    UserId = WebMatrix.WebData.WebSecurity.GetUserId(User.Identity.Name)
-                    }
-                  
+                    new SharedWith{ }
 
             },
-               Items = new List<Items> { 
+                Items = new List<Items> { 
 
                     new Items { }
                 }
@@ -84,16 +101,33 @@ namespace Boodschappie.Controllers
             if (ModelState.IsValid)
             {
 
-                if (itemlist.SharedWith == null)
+                if (itemlist.SharedWith != null)
                 {
-                    itemlist.SharedWith = new List<SharedWith>();
-                    itemlist.SharedWith.Add(new SharedWith
+                    List<SharedWith> sw = new List<SharedWith>();
+
+                    foreach (var user in itemlist.SharedWith)
                     {
-                        ItemListId = 0,
-                        UserId = WebMatrix.WebData.WebSecurity.GetUserId(User.Identity.Name)
+                        var userdetails = UserProfile.getUser(user.UserId);
+
+                        sw.Add(new SharedWith
+                         {
+                             ItemListId = itemlist.ItemListId,
+                             UserId = userdetails.UserId,
+                             UserName = userdetails.UserName
+                         });
+
+                    }
+
+                    sw.Add(new SharedWith
+                    {
+                        ItemListId = itemlist.ItemListId,
+                        UserId = WebMatrix.WebData.WebSecurity.CurrentUserId,
+                        UserName = WebMatrix.WebData.WebSecurity.CurrentUserName
                     });
 
+                    itemlist.SharedWith = sw;
                 }
+          
 
                 itemlist.LastUpdate = DateTime.Now;
 
@@ -122,6 +156,8 @@ namespace Boodschappie.Controllers
             ItemList itemlist = db.ItemList.Find(id);
 
             itemlist.Items = Items.getItemsList(id);
+            itemlist.SharedWith = SharedWith.GetListShared(id);
+
 
             if (itemlist == null)
             {
@@ -131,6 +167,8 @@ namespace Boodschappie.Controllers
             {
                 return HttpNotFound();
             }
+
+
 
             return View(itemlist);
         }
@@ -229,5 +267,10 @@ namespace Boodschappie.Controllers
             db.Dispose();
             base.Dispose(disposing);
         }
+
+
+
+
+
     }
 }

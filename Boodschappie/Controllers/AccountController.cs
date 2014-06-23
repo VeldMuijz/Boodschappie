@@ -17,6 +17,17 @@ namespace Boodschappie.Controllers
     [InitializeSimpleMembership]
     public class AccountController : Controller
     {
+                   
+            [InitializeSimpleMembership]
+            public static void SeedUsers(){
+                if (WebSecurity.GetUserId("jeroen") < 0)
+                {
+                    WebSecurity.CreateAccount("jeroen", "welkom01");
+                    WebSecurity.CreateAccount("jan", "welkom01");
+                }
+
+            }
+
         //
         // GET: /Account/Login
 

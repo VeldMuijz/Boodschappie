@@ -27,7 +27,7 @@
             @Html.ValidationMessageFor(model => model.ItemListName)
         </div>
         <div class="editor-field">
-            <div id="editorRows" class="input-group">
+            <div id="editorRowsItem" class="input-group">
                 @foreach (var item in Model.Items)
                 {
                     @Html.Partial("ItemsRowPartial", item);
@@ -38,7 +38,31 @@
 
         </div>
 
-        @Html.ActionLink("Add another...", "BlankItemRow", null, new { id = "addItem" })
+        @Html.ActionLink("Add another item...", "BlankItemRow", null, new { id = "addItem" })
+
+        <div class="editor-field">
+            <div class="editor-label">
+                @Html.Label("You are sharing with:")
+
+            </div>
+            <div id="editorRowsShared" class="input-group">
+                @foreach (var shared in Model.SharedWith)
+                {
+                    @Html.Partial("SharedWithPartial", shared);
+
+                }
+            </div>
+            <div>
+                @Html.Label("Search for users")
+            </div>
+            <div>
+                <input id="searchUser" type="text" />
+                <div id="hiddendiv">
+                    <table></table>
+                </div>
+            </div>
+        </div>
+
 
         <div class="editor-label">
             @Html.LabelFor(model => model.LastUpdate)
@@ -60,24 +84,105 @@
 @section Scripts {
     @Scripts.Render("~/bundles/jqueryval")
 <script>
-    $(function () {
 
+    //Adding and removing items
+    $(function () {
+        //Add another item partial
         $('#addItem').click(function () {
             $.ajax({
                 url: this.href,
                 cache: false,
                 success: function (html) {
-                    $('#editorRows').append(html);
+                    $('#editorRowsItem').append(html);
                 }
             });
             return false;
         });
 
-        $('a.deleteRow').live('click', function () {
-            $(this).parents('div.editorRow:first').remove();
+        //Remove item partial
+        $('a.deleteRowItem').live('click', function () {
+            $(this).parents('div.editorRowItem:first').remove();
             return false;
         });
 
     })
 </script>
+
+<script>
+    //Searching, adding and removing SharedWith users
+    $(function () {
+
+        $('#addShared').click(function () {
+            $.ajax({
+                url: this.href,
+                cache: false,
+                success: function (html) {
+                    $('#editorRowsShared').append(html);
+                }
+            });
+            return false;
+        });
+
+        $('a.deleteRowShared').live('click', function () {
+            $(this).parents('div.editorRowShared:first').remove();
+            return false;
+        });
+
+        //Search for users
+
+        //Search for users
+        $('#searchUser').keyup(function () {
+            search = $('#searchUser').val();
+
+            $.ajax({
+                type: "GET",
+                url: ("/account/searchusers/" + search),
+                success: function fillCombobox(data) {
+                    $('#hiddendiv').html("");
+                    $.each(data, function (index, item) {
+
+                        $('#hiddendiv').append(
+                        '<tr><td class="userId" hidden="true" value="' + this.UserId + '">' + this.UserId +
+                        '</td><td class="userName" value="' + this.UserName + '">' + this.UserName + '</td>' +
+                        '<td><a href="#" value="' + this.UserId + '">Add</a></td></tr>');
+
+                    });
+
+                },
+                error: function (xhr, status) {
+                    alert(xhr, +'\n' + status);
+                }
+
+            })
+
+        }
+
+            )
+
+        //Add the user to the sharedWith list
+        $('#hiddendiv').delegate('a', 'click', function () {
+
+            var userId = $(this).attr('value')
+
+            $.ajax({
+                url: '/ItemList/AddSharedWith?id=' + userId,
+                contentType: 'application/html',
+                type: 'GET',
+                dataType: 'html'
+
+            }).success(function (result) {
+
+                $('#editorRowsShared').html(result);
+
+            }).error(function (xhr, status) {
+                alert(xhr, +'\n' + status);
+            })
+
+        });
+
+
+
+    });
+</script>
+
 }

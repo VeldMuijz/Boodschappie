@@ -1,7 +1,10 @@
-﻿using System;
+﻿using Boodschappie.Controllers;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
+using System.Web.Security;
+using WebMatrix.WebData;
 
 namespace Boodschappie.Models
 {
@@ -28,17 +31,17 @@ namespace Boodschappie.Models
             {
 
                 new ItemList {ItemListName="Seedlist1", Items = new List<Items> { items[1]}, LastUpdate = DateTime.Now, UserId=1},
-                new ItemList {ItemListName="Seedlist2", Items = new List<Items> { items[2]}, LastUpdate = DateTime.Now, UserId=1},
+                new ItemList {ItemListName="Seedlist2", Items = new List<Items> { items[2]}, LastUpdate = DateTime.Now, UserId=2},
                 new ItemList {ItemListName="Seedlist3", Items = new List<Items> { items[3]}, LastUpdate = DateTime.Now, UserId=1},
-                new ItemList {ItemListName="Seedlist4", Items = new List<Items> { items[4]}, LastUpdate = DateTime.Now, UserId=1},
+                new ItemList {ItemListName="Seedlist4", Items = new List<Items> { items[4]}, LastUpdate = DateTime.Now, UserId=2},
                 new ItemList {ItemListName="Seedlist5", Items = new List<Items> { items[5]}, LastUpdate = DateTime.Now, UserId=1},
-                new ItemList {ItemListName="Seedlist6", Items = new List<Items> { items[6]}, LastUpdate = DateTime.Now, UserId=1},
+                new ItemList {ItemListName="Seedlist6", Items = new List<Items> { items[6]}, LastUpdate = DateTime.Now, UserId=2},
                 new ItemList {ItemListName="Seedlist7", Items = new List<Items> { items[7]}, LastUpdate = DateTime.Now, UserId=1},
-                new ItemList {ItemListName="Seedlist8", Items = new List<Items> { items[8]}, LastUpdate = DateTime.Now, UserId=1},
+                new ItemList {ItemListName="Seedlist8", Items = new List<Items> { items[8]}, LastUpdate = DateTime.Now, UserId=2},
                 new ItemList {ItemListName="Seedlist9", Items = new List<Items> { items[8]}, LastUpdate = DateTime.Now, UserId=1},
-                new ItemList {ItemListName="Seedlist10", Items = new List<Items> { items[1]}, LastUpdate = DateTime.Now, UserId=1},
+                new ItemList {ItemListName="Seedlist10", Items = new List<Items> { items[1]}, LastUpdate = DateTime.Now, UserId=2},
                 new ItemList {ItemListName="Seedlist11", Items = new List<Items> { items[2]}, LastUpdate = DateTime.Now, UserId=1},
-                new ItemList {ItemListName="Seedlist12", Items = new List<Items> { items[3]}, LastUpdate = DateTime.Now, UserId=1}
+                new ItemList {ItemListName="Seedlist12", Items = new List<Items> { items[3]}, LastUpdate = DateTime.Now, UserId=2}
 
             };
             System.Diagnostics.Debug.WriteLine("[DB: Initializing table Itemlist]");
@@ -48,16 +51,20 @@ namespace Boodschappie.Models
             System.Diagnostics.Debug.WriteLine("[DB: Initializing table SharedWith]");
             var sharedwith = new List<SharedWith>
             {
-                new SharedWith { ItemListId=1, UserId=1},
-                new SharedWith { ItemListId=2, UserId=1},
-                new SharedWith { ItemListId=2, UserId=2},
-                new SharedWith { ItemListId=3, UserId=1},
-                new SharedWith { ItemListId=4, UserId=1},
-                new SharedWith { ItemListId=4, UserId=2},
-                new SharedWith { ItemListId=4, UserId=3},
+                new SharedWith { ItemListId=1, UserId=1, UserName="Jeroen" },
+                new SharedWith { ItemListId=2, UserId=1, UserName="Jeroen" },
+                new SharedWith { ItemListId=2, UserId=2, UserName="Jan" },
+                new SharedWith { ItemListId=3, UserId=1, UserName="Jeroen" },
+                new SharedWith { ItemListId=4,  UserId=1, UserName="Jeroen" },
+                new SharedWith { ItemListId=4, UserId=2, UserName="Jan" },
+                new SharedWith { ItemListId=4,  UserId=3, UserName="Jaap" },
             };
             sharedwith.ForEach(i => context.SharedWith.Add(i));
             context.SaveChanges();
+
+            
+
+
             System.Diagnostics.Debug.WriteLine("[DB: Execute Seed]");
             base.Seed(context);
         }

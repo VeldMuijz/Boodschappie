@@ -323,6 +323,7 @@
     <Content Include="Views\Items\Edit.cshtml" />
     <Content Include="Views\Items\Delete.cshtml" />
     <Content Include="Views\Shared\ItemsRowPartial.cshtml" />
+    <Content Include="Views\Shared\SharedWithPartial.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

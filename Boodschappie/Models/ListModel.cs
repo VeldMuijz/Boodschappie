@@ -30,6 +30,7 @@ namespace Boodschappie.Models
         public long SharedWithId { get; set; }
         public long ItemListId { get; set; }
         public long UserId { get; set; }
+        public String UserName { get; set; }
 
         private AppContext db = new AppContext();
         public Boolean checkUser(long userid, long listid)
@@ -47,6 +48,18 @@ namespace Boodschappie.Models
 
             return result;
         }
+
+        public static List<SharedWith> GetListShared(long listId)
+        {
+            using (AppContext db = new AppContext())
+            {
+                List<SharedWith> listsharedWith = (from sharedWith in db.SharedWith
+                                                   where sharedWith.ItemListId == listId
+                                                   select sharedWith).ToList();
+                return listsharedWith;
+            }
+        }
+
     }
 
     [Table("Items")]

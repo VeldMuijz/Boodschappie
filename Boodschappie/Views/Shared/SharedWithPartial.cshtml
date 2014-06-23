@@ -1,0 +1,36 @@
+﻿@model Boodschappie.Models.SharedWith
+
+
+<div class="editorRow">
+
+    @using (Html.BeginCollectionItem("SharedWith"))
+    {
+        @*@Html.AntiForgeryToken()
+            @Html.ValidationSummary(true)*@
+
+        <fieldset>
+            <legend>SharedWith</legend>
+
+            <div class="editor-field">
+                @Html.HiddenFor(model => model.SharedWithId)
+            </div>
+
+            <div class="editor-field">
+                @Html.HiddenFor(model => model.SharedWithId)
+            </div>
+
+            <div class="editor-field">
+                @Html.HiddenFor(model => model.ItemListId)
+            </div>
+
+            <div class="editor-field">
+                @Html.HiddenFor(model => model.UserId)
+            </div>
+
+            <div class="editor-field">
+               <table> <tr><td>@Html.DisplayFor(model => model.UserName)</td><td><a href="#" class="deleteRowShared">Stop Sharing</a></td></tr> </table>
+            </div>
+
+        </fieldset>
+    }
+</div>

@@ -1,4 +1,5 @@
-﻿using Boodschappie.Models;
+﻿using Boodschappie.Controllers;
+using Boodschappie.Models;
 using System;
 using System.Collections.Generic;
 using System.Data.Entity;
@@ -9,6 +10,7 @@ using System.Web.Http;
 using System.Web.Mvc;
 using System.Web.Optimization;
 using System.Web.Routing;
+using WebMatrix.WebData;
 
 namespace Boodschappie
 {
@@ -21,6 +23,7 @@ namespace Boodschappie
        
         protected void Application_Start()
         {
+
             System.Diagnostics.Debug.WriteLine("[Starting Database init]");
             System.Diagnostics.Debug.WriteLine("[DB: Clearing all Pools]");
             SqlConnection.ClearAllPools();
@@ -33,7 +36,10 @@ namespace Boodschappie
             db.Database.Initialize(true);
             
             System.Diagnostics.Debug.WriteLine("[DB: End of init]");
-           
+
+            //AccountController.SeedUsers();
+
+
             AreaRegistration.RegisterAllAreas();
 
             WebApiConfig.Register(GlobalConfiguration.Configuration);
