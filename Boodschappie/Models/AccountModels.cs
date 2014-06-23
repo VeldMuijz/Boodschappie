@@ -36,7 +36,7 @@ namespace Boodschappie.Models
             using (AppContext dbContext = new AppContext())
             {
 
-                var users = dbContext.UserProfile.Where(up => up.UserName.Contains(searchString)).ToList();
+                var users = dbContext.UserProfile.Where(up => up.UserName.Contains(searchString) && up.UserId != WebMatrix.WebData.WebSecurity.CurrentUserId).ToList();
 
                 return users;
             }
